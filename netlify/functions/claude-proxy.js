@@ -5,31 +5,18 @@ exports.handler = async function (event) {
     "Access-Control-Allow-Methods": "POST, OPTIONS"
   };
 
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers, body: "" };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, headers, body: "Method Not Allowed" };
-  }
+  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
+  if (event.httpMethod !== "POST") return { statusCode: 405, headers, body: "Method Not Allowed" };
 
   try {
-    let bodyData = {};
-    try {
-      bodyData = JSON.parse(event.body || "{}");
-    } catch (e) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: "Noto'g'ri JSON formati." }) };
-    }
-
+    const bodyData = JSON.parse(event.body || "{}");
     const { prompt, image, file } = bodyData;
     const imgObj = image || file;
 
-    // 1. RASMLI SO'ROV (Gemini API)
+    // RASMLI SO'ROV (Gemini API - Strict JSON response)
     if (imgObj && (imgObj.data || typeof imgObj === 'string')) {
       const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-      if (!geminiKey) {
-        return { statusCode: 500, headers, body: JSON.stringify({ error: "GEMINI_API_KEY topilmadi." }) };
-      }
+      if (!geminiKey) return { statusCode: 500, headers, body: JSON.stringify({ error: "GEMINI_API_KEY sozlanmagan." }) };
 
       let rawBase64 = typeof imgObj === 'string' ? imgObj : imgObj.data;
       let mimeType = imgObj.mediaType || imgObj.mimeType || "image/jpeg";
@@ -40,26 +27,30 @@ exports.handler = async function (event) {
         rawBase64 = parts[1];
       }
 
+      const promptText = `Ushbu ovqatni tahlil qil va FAQAT quyidagi JSON formatida javob ber, ortiqcha so'z yozma:
+{"kkal": 550, "oqsil": 25, "uglevod": 45, "yog": 20, "text": "Burger: yuqori kaloriyali va oqsilga boy taom."}`;
+
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  { text: prompt || "Ushbu ovqatning KKAL, OQSIL (g), UGLEVOD (g) va YOG' (g) miqdorini tahlil qilib ber." },
-                  { inline_data: { mime_type: mimeType, data: rawBase64 } }
-                ]
-              }
-            ]
+            contents: [{
+              parts: [
+                { text: promptText },
+                { inline_data: { mime_type: mimeType, data: rawBase64 } }
+              ]
+            }]
           })
         }
       );
 
       const data = await response.json();
-      const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "Natija aniqlanmadi.";
+      let textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      
+      // JSON formatini tozalash
+      textResult = textResult.replace(/```json/g, "").replace(/```/g, "").trim();
 
       return {
         statusCode: 200,
@@ -72,21 +63,14 @@ exports.handler = async function (event) {
       };
     }
 
-    // 2. MATNLI SO'ROV (Groq Llama 3.1)
+    // MATNLI SO'ROV (Groq Llama 3.1)
     const groqKey = process.env.GROQ_API_KEY;
-    if (!groqKey) {
-      return { statusCode: 500, headers, body: JSON.stringify({ error: "GROQ_API_KEY topilmadi." }) };
-    }
-
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${groqKey}`,
-        "Content-Type": "application/json"
-      },
+      headers: { "Authorization": `Bearer ${groqKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "llama-3.1-8b-instant",
-        messages: [{ role: "user", content: prompt || "Fitnes reja tuzib ber." }]
+        messages: [{ role: "user", content: prompt || "Fitnes reja." }]
       })
     });
 
@@ -104,10 +88,6 @@ exports.handler = async function (event) {
     };
 
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: err.message })
-    };
+    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
   }
 };
