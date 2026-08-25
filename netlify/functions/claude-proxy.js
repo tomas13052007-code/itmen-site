@@ -1,7 +1,3 @@
-// Netlify Function: securely proxies requests to the Google Gemini API (free tier).
-// The API key lives only here (as an environment variable on Netlify),
-// never in the browser code, so it can't be stolen from the site's source.
-
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -11,7 +7,7 @@ exports.handler = async function (event) {
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "GEMINI_API_KEY sozlanmagan. Netlify saytida Environment Variables bo'limiga qo'shing." })
+      body: JSON.stringify({ error: "GEMINI_API_KEY sozlanmagan." })
     };
   }
 
@@ -33,22 +29,15 @@ exports.handler = async function (event) {
     );
 
     const data = await response.json();
-
-    if (data.error) {
-      return { statusCode: 500, body: JSON.stringify({ error: data.error.message }) };
-    }
-
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text })
+      body: JSON.stringify(data)
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message })
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
