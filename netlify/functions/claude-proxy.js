@@ -12,9 +12,9 @@ exports.handler = async function (event) {
   }
 
   try {
-    const { prompt, image } = JSON.parse(event.body);
+    const { prompt, image } = JSON.parse(event.body || "{}");
 
-    const parts = [{ text: prompt }];
+    const parts = [{ text: prompt || "Tahlil qilib ber." }];
     if (image && image.data && image.mediaType) {
       parts.push({ inline_data: { mime_type: image.mediaType, data: image.data } });
     }
@@ -29,10 +29,18 @@ exports.handler = async function (event) {
     );
 
     const data = await response.json();
+    const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ 
+        content: [{ text: textResponse }],
+        candidates: data.candidates 
+      })
     };
   } catch (error) {
     return {
