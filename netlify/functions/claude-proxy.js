@@ -1,44 +1,44 @@
 exports.handler = async function (event) {
-  // CORS va Method tekshiruvi
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS"
+  };
+
   if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS"
-      },
-      body: ""
-    };
+    return { statusCode: 200, headers, body: "" };
   }
 
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+    return { statusCode: 405, headers, body: "Method Not Allowed" };
   }
 
   try {
-    const bodyData = JSON.parse(event.body || "{}");
-    const { prompt, image, file } = bodyData;
-    const imgData = image || file;
+    let bodyData = {};
+    try {
+      bodyData = JSON.parse(event.body || "{}");
+    } catch (e) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: "Noto'g'ri JSON formati." }) };
+    }
 
-    // 1. RASMLI SO'ROV (Gemini API ishlatiladi)
-    if (imgData && imgData.data) {
+    const { prompt, image, file } = bodyData;
+    const imgObj = image || file;
+
+    // 1. RASMLI SO'ROV (Gemini API)
+    if (imgObj && (imgObj.data || typeof imgObj === 'string')) {
       const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
       if (!geminiKey) {
-        return { 
-          statusCode: 500, 
-          body: JSON.stringify({ error: "GEMINI_API_KEY sozlanmagan." }) 
-        };
+        return { statusCode: 500, headers, body: JSON.stringify({ error: "GEMINI_API_KEY topilmadi." }) };
       }
 
-      // Base64 tozalash (data:image/jpeg;base64, qismini olib tashlash)
-      let cleanBase64 = imgData.data;
-      if (cleanBase64.includes(",")) {
-        cleanBase64 = cleanBase64.split(",")[1];
-      }
+      let rawBase64 = typeof imgObj === 'string' ? imgObj : imgObj.data;
+      let mimeType = imgObj.mediaType || imgObj.mimeType || "image/jpeg";
 
-      const mimeType = imgData.mediaType || imgData.mimeType || "image/jpeg";
-      const systemPrompt = "Ushbu ovqat rasmini tahlil qil. Javobda faqat taom nomi va taxminiy kaloriyasini yozib ber: KKAL, OQSIL (g), UGLEVOD (g), YOG' (g).";
+      if (rawBase64.includes(";base64,")) {
+        const parts = rawBase64.split(";base64,");
+        mimeType = parts[0].replace("data:", "");
+        rawBase64 = parts[1];
+      }
 
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
@@ -49,13 +49,8 @@ exports.handler = async function (event) {
             contents: [
               {
                 parts: [
-                  { text: prompt || systemPrompt },
-                  {
-                    inline_data: {
-                      mime_type: mimeType,
-                      data: cleanBase64
-                    }
-                  }
+                  { text: prompt || "Ushbu ovqatning KKAL, OQSIL (g), UGLEVOD (g) va YOG' (g) miqdorini tahlil qilib ber." },
+                  { inline_data: { mime_type: mimeType, data: rawBase64 } }
                 ]
               }
             ]
@@ -64,72 +59,55 @@ exports.handler = async function (event) {
       );
 
       const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error.message || "Gemini API xatosi");
-      }
-
-      const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Tahlil natijasi olinmadi.";
+      const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "Natija aniqlanmadi.";
 
       return {
         statusCode: 200,
-        headers: { 
-          "Content-Type": "application/json", 
-          "Access-Control-Allow-Origin": "*" 
-        },
+        headers,
         body: JSON.stringify({
-          content: [{ type: "text", text: textResponse }],
-          text: textResponse,
-          result: textResponse
-        })
-      };
-    } 
-    
-    // 2. MATNLI SO'ROV (Groq Llama 3.1 ishlatiladi)
-    else {
-      const groqKey = process.env.GROQ_API_KEY;
-      if (!groqKey) {
-        return { 
-          statusCode: 500, 
-          body: JSON.stringify({ error: "GROQ_API_KEY sozlanmagan." }) 
-        };
-      }
-
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${groqKey}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages: [
-            { role: "user", content: prompt || "Fitnes va ovqatlanish bo'yicha qisqa reja tuzib ber." }
-          ]
-        })
-      });
-
-      const data = await response.json();
-      const textResponse = data.choices?.[0]?.message?.content || "";
-
-      return {
-        statusCode: 200,
-        headers: { 
-          "Content-Type": "application/json", 
-          "Access-Control-Allow-Origin": "*" 
-        },
-        body: JSON.stringify({
-          content: [{ type: "text", text: textResponse }],
-          text: textResponse,
-          result: textResponse
+          content: [{ type: "text", text: textResult }],
+          text: textResult,
+          result: textResult
         })
       };
     }
-  } catch (error) {
+
+    // 2. MATNLI SO'ROV (Groq Llama 3.1)
+    const groqKey = process.env.GROQ_API_KEY;
+    if (!groqKey) {
+      return { statusCode: 500, headers, body: JSON.stringify({ error: "GROQ_API_KEY topilmadi." }) };
+    }
+
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${groqKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [{ role: "user", content: prompt || "Fitnes reja tuzib ber." }]
+      })
+    });
+
+    const groqData = await groqRes.json();
+    const groqText = groqData.choices?.[0]?.message?.content || "";
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        content: [{ type: "text", text: groqText }],
+        text: groqText,
+        result: groqText
+      })
+    };
+
+  } catch (err) {
     return {
       statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: error.message })
+      headers,
+      body: JSON.stringify({ error: err.message })
     };
   }
 };
