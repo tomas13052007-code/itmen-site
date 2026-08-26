@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>fit.men — Fitness & AI Coach</title>
+<title>fit.men — Fitness Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -184,9 +184,9 @@
     <div class="hero">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">🏋️ AI asosidagi fitnes yordamchi</div>
+          <div class="eyebrow">🏋️ Shaxsiy fitnes yordamchi</div>
           <h1>Irodangga<br>aql qo'sh.</h1>
-          <p class="lead">Vazningni, maqsadingni va ovqatingni ayt — sun'iy intellekt senga mos mashg'ulot rejasini tuzadi va har bir taomingdagi kaloriyani hisoblab beradi.</p>
+          <p class="lead">Vazningni va maqsadingni kirit — senga mos haftalik mashg'ulot rejasini tuzib beramiz va har bir taomingdagi kaloriyani darhol ko'rsatamiz.</p>
           <div class="hero-actions">
             <button class="btn btn-gold" onclick="openAuth()">Bepul boshlash</button>
             <button class="btn btn-ghost" onclick="document.getElementById('howBlock').scrollIntoView({behavior:'smooth'})">Qanday ishlaydi →</button>
@@ -222,13 +222,13 @@
         </div>
         <div class="step-card">
           <div class="step-num">02</div>
-          <h3>AI tahlil qiladi</h3>
-          <p>Sun'iy intellekt ma'lumotlaringni tahlil qilib, senga mos haftalik mashg'ulot va ovqatlanish tavsiyasini tuzadi.</p>
+          <h3>Hisob-kitob qilinadi</h3>
+          <p>Ma'lumotlaring asosida BMI, kunlik kaloriya normasi va senga mos haftalik reja darhol tuziladi.</p>
         </div>
         <div class="step-card">
           <div class="step-num">03</div>
           <h3>Ovqatingni tekshirasan</h3>
-          <p>Taom rasmini yuklaysan — AI necha kaloriya ekanini va tarkibini aniqlab beradi.</p>
+          <p>Taom nomini yozasan — bazamizdan necha kaloriya ekanini va tarkibini darhol ko'rasan.</p>
         </div>
       </div>
     </div>
@@ -241,14 +241,14 @@
       <div class="feature-grid">
         <div class="feature-tile" onclick="showPage('plan')">
           <div class="icon">🧠</div>
-          <h3>Shaxsiy AI reja</h3>
-          <p>Yosh, bo'y, vazn va maqsadingiz asosida AI haftalik mashg'ulot va ovqatlanish rejasini tuzadi.</p>
+          <h3>Shaxsiy reja</h3>
+          <p>Yosh, bo'y, vazn va maqsadingiz asosida haftalik mashg'ulot va ovqatlanish rejasi darhol tuziladi.</p>
           <div class="go">Ochish →</div>
         </div>
         <div class="feature-tile" onclick="showPage('food')">
-          <div class="icon">📷</div>
+          <div class="icon">🍽️</div>
           <h3>Ovqat kaloriya tahlili</h3>
-          <p>Taom rasmini yuklang — AI kaloriya, oqsil, uglevod va yog' miqdorini hisoblab beradi.</p>
+          <p>Taom nomini kiriting — kaloriya, oqsil, uglevod va yog' miqdorini darhol ko'rasiz.</p>
           <div class="go">Ochish →</div>
         </div>
         <div class="feature-tile" onclick="showPage('reviews')">
@@ -265,12 +265,12 @@
   <section class="page" id="page-plan">
     <div class="page-header">
       <div class="back-link" onclick="showPage('home')">← Bosh sahifaga</div>
-      <h1 class="page-title">Shaxsiy AI reja</h1>
-      <p class="page-sub">Ma'lumotlaringizni kiriting — AI sizga mos haftalik mashg'ulot va ovqatlanish rejasini tuzib beradi.</p>
+      <h1 class="page-title">Shaxsiy reja</h1>
+      <p class="page-sub">Ma'lumotlaringizni kiriting — sizga mos haftalik mashg'ulot va ovqatlanish rejasi darhol tuziladi.</p>
     </div>
 
     <div id="dashLocked" class="card" style="text-align:center;margin:24px 0 56px;">
-      <p style="color:var(--muted);margin:0 0 16px;">Shaxsiy AI rejangizni olish uchun avval ro'yxatdan o'ting.</p>
+      <p style="color:var(--muted);margin:0 0 16px;">Shaxsiy rejangizni olish uchun avval ro'yxatdan o'ting.</p>
       <button class="btn btn-primary" onclick="openAuth()">Kirish / Ro'yxatdan o'tish</button>
     </div>
 
@@ -300,8 +300,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-gold btn-block" style="margin-top:8px;" onclick="generatePlan()">AI reja tuzsin</button>
-      <div id="planLoading" class="loading hidden" style="margin-top:16px;"><div class="spinner"></div>AI reja tuzmoqda...</div>
+      <button class="btn btn-gold btn-block" style="margin-top:8px;" onclick="generatePlan()">Reja tuzish</button>
       <div id="planResult" class="ai-result hidden"></div>
     </div>
   </section>
@@ -311,17 +310,25 @@
     <div class="page-header">
       <div class="back-link" onclick="showPage('home')">← Bosh sahifaga</div>
       <h1 class="page-title">Ovqat kaloriya tahlili</h1>
-      <p class="page-sub">Taom rasmini yuklang — sun'iy intellekt necha kaloriya ekanini va tarkibini aniqlab beradi.</p>
+      <p class="page-sub">Taom nomini kiriting — bazamizdan necha kaloriya ekanini va tarkibini darhol ko'rasiz.</p>
     </div>
     <div class="card" style="margin:24px 0 56px;">
       <div class="food-drop" onclick="document.getElementById('foodInput').click()">
         <div style="font-size:32px;">📷</div>
-        <p style="margin:10px 0 0;font-weight:700;">Taom rasmini yuklash uchun bosing</p>
+        <p style="margin:10px 0 0;font-weight:700;">Taom rasmini yuklash (ixtiyoriy, faqat ko'rinish uchun)</p>
         <p style="margin:4px 0 0;color:var(--muted);font-size:13px;">JPG yoki PNG</p>
-        <input type="file" id="foodInput" accept="image/*" class="hidden" onchange="handleFood(this)">
+        <input type="file" id="foodInput" accept="image/*" class="hidden" onchange="handleFoodPhoto(this)">
       </div>
       <img id="foodPreview" class="food-preview hidden">
-      <div id="foodLoading" class="loading hidden" style="margin-top:16px;justify-content:center;"><div class="spinner"></div>AI taomni tahlil qilmoqda...</div>
+
+      <div class="field" style="margin-top:22px;">
+        <label>Taom nomini kiriting yoki tanlang</label>
+        <input type="text" id="foodSearch" list="foodList" placeholder="masalan: Osh, Lag'mon, Shashlik..." oninput="handleFoodSearch()">
+        <datalist id="foodList"></datalist>
+      </div>
+
+      <div id="foodSuggestions" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;"></div>
+
       <div id="foodResult" class="hidden">
         <h3 id="foodName" style="font-family:'Manrope';font-weight:800;font-size:18px;margin-top:20px;"></h3>
         <div class="macro-grid">
@@ -331,6 +338,9 @@
           <div class="macro"><div class="v" id="m_fat">-</div><div class="l">Yog', g</div></div>
         </div>
         <div class="ai-result" id="foodAdvice" style="margin-top:16px;"></div>
+      </div>
+      <div id="foodNotFound" class="hidden" style="margin-top:18px;color:var(--muted);font-size:14px;">
+        Bu taom bazada topilmadi. Yuqoridagi ro'yxatdan yoki tavsiya etilgan variantlardan birini tanlang.
       </div>
     </div>
   </section>
@@ -361,7 +371,7 @@
 
 </main>
 
-<footer>© 2026 fit.men — AI fitnes yordamchi. Bu demo prototip.</footer>
+<footer>© 2026 fit.men — shaxsiy fitnes yordamchi.</footer>
 
 <!-- Auth Modal -->
 <div class="overlay hidden" id="authOverlay">
@@ -470,15 +480,95 @@ document.getElementById('goalPills').addEventListener('click', e=>{
   }
 });
 
-async function callAI(prompt, image){
-  const response = await fetch("/.netlify/functions/claude-proxy", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(image ? { prompt, image } : { prompt })
-  });
-  const data = await response.json();
-  if(data.error) throw new Error(data.error);
-  return data.text;
+// Haftalik mashg'ulot shablonlari (AI'siz, maqsadga qarab)
+const WORKOUT_TEMPLATES = {
+  ozish: [
+    "Dushanba — 30 daqiqa yugurish / tez yurish + qorin mashqlari (3x15)",
+    "Seshanba — Butun tana kuch mashqlari (squat, o'tirib turish, plank) 3 ta yondashuv",
+    "Chorshanba — 40 daqiqa velosiped yoki suzish (kardio)",
+    "Payshanba — Yuqori tana mashqlari (push-up, gantel) + 20 daqiqa yurish",
+    "Juma — Intervalli yugurish (HIIT) 25 daqiqa",
+    "Shanba — Yengil yurish 45 daqiqa + cho'zilish mashqlari",
+    "Yakshanba — Dam olish yoki yengil yoga"
+  ],
+  semirish: [
+    "Dushanba — Ko'krak va triceps (bench press, push-up) 4x10",
+    "Seshanba — Orqa va biceps (tortilish, gantel) 4x10",
+    "Chorshanba — Oyoq mashqlari (squat, lunges) 4x12",
+    "Payshanba — Dam olish yoki yengil yurish",
+    "Juma — Yelka va qorin mashqlari 4x10",
+    "Shanba — Butun tana kuch mashqlari (og'ir vazn, kam takror)",
+    "Yakshanba — To'liq dam olish"
+  ],
+  saqlash: [
+    "Dushanba — Butun tana kuch mashqlari 3x12",
+    "Seshanba — 30 daqiqa yengil kardio (yurish/velosiped)",
+    "Chorshanba — Kuch mashqlari (yuqori tana) 3x12",
+    "Payshanba — Yoga yoki cho'zilish mashqlari",
+    "Juma — Kuch mashqlari (pastki tana) 3x12",
+    "Shanba — Sport o'yin yoki suzish (faol dam olish)",
+    "Yakshanba — Dam olish"
+  ]
+};
+
+const DIET_TIPS = {
+  ozish: [
+    "Kunlik kaloriyani me'yordan 300-500 kkal kam iste'mol qiling",
+    "Oqsilga boy ovqatlarni (tuxum, tovuq, dukkakli) ko'proq iste'mol qiling",
+    "Shakarli ichimliklar va fast-food'dan saqlaning",
+    "Kuniga kamida 2 litr suv iching"
+  ],
+  semirish: [
+    "Kunlik kaloriyani me'yordan 300-500 kkal ko'p iste'mol qiling",
+    "Har ovqatlanishda oqsil va murakkab uglevodlarni birga iste'mol qiling (guruch, non, go'sht)",
+    "Kunига 4-5 mahal, kichik porsiyalarda ovqatlaning",
+    "Yong'oq, sariyog', pista kabi yuqori kaloriyali sog'lom ovqatlarni qo'shing"
+  ],
+  saqlash: [
+    "Kaloriya balansini saqlang — sarflagancha iste'mol qiling",
+    "Ovqat tarkibida sabzavot va mevalarga alohida e'tibor bering",
+    "Muntazam va bir xil vaqtda ovqatlaning",
+    "Haftada kamida 3 marta jismoniy faollik bilan shug'ullaning"
+  ]
+};
+
+function calcPlan({name, age, height, weight, gender, goal}){
+  const h = Number(height), w = Number(weight), a = Number(age);
+  const bmi = (w / ((h/100)*(h/100))).toFixed(1);
+  let bmiLabel = "Normal";
+  if(bmi < 18.5) bmiLabel = "Vazn yetishmovchiligi";
+  else if(bmi >= 25 && bmi < 30) bmiLabel = "Ortiqcha vazn";
+  else if(bmi >= 30) bmiLabel = "Semizlik";
+
+  let bmr = gender === "erkak"
+    ? 10*w + 6.25*h - 5*a + 5
+    : 10*w + 6.25*h - 5*a - 161;
+  let tdee = bmr * 1.375; // yengil-o'rtacha faollik
+
+  let target = tdee;
+  if(goal === "ozish") target = tdee - 450;
+  if(goal === "semirish") target = tdee + 400;
+  target = Math.round(target / 10) * 10;
+
+  const goalLabel = { ozish: "Vazn tashlash", semirish: "Vazn qo'shish", saqlash: "Vaznni saqlash" }[goal];
+
+  let html = `
+    <div class="macro-grid">
+      <div class="macro"><div class="v">${bmi}</div><div class="l">BMI</div></div>
+      <div class="macro"><div class="v">${bmiLabel}</div><div class="l">Baho</div></div>
+      <div class="macro"><div class="v">${Math.round(tdee)}</div><div class="l">Kunlik norma, kkal</div></div>
+      <div class="macro"><div class="v">${target}</div><div class="l">Tavsiya, kkal</div></div>
+    </div>
+    <h3 style="font-family:'Manrope';font-weight:800;font-size:16px;margin:22px 0 10px;">📅 Haftalik mashg'ulot rejasi — ${goalLabel}</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${WORKOUT_TEMPLATES[goal].map(d => `<div style="background:#F8F7F2;border-radius:10px;padding:10px 14px;font-size:14px;">${d}</div>`).join('')}
+    </div>
+    <h3 style="font-family:'Manrope';font-weight:800;font-size:16px;margin:22px 0 10px;">🥗 Ovqatlanish tavsiyalari</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${DIET_TIPS[goal].map(t => `<div style="font-size:14px;color:var(--muted);">• ${t}</div>`).join('')}
+    </div>
+  `;
+  return html;
 }
 
 async function generatePlan(){
@@ -491,61 +581,103 @@ async function generatePlan(){
 
   if(!age || !height || !weight){ alert('Iltimos yosh, bo\'y va vaznni kiriting'); return; }
 
-  document.getElementById('planResult').classList.add('hidden');
-  document.getElementById('planLoading').classList.remove('hidden');
-
-  const prompt = `Sen tajribali fitnes murabbiy va dietologsan. Quyidagi odam uchun o'zbek tilida, aniq va amaliy shaxsiy reja tuz:
-Ism: ${name}, Jins: ${gender}, Yosh: ${age}, Bo'y: ${height} sm, Vazn: ${weight} kg, Maqsad: ${goal}.
-
-Javobni quyidagi tuzilishda ber (sarlavhalar bilan, ortiqcha kirish so'zlarsiz):
-1. Qisqa tahlil (taxminiy BMI va tavsiya etilgan kunlik kaloriya)
-2. Haftalik mashg'ulot rejasi (7 kun, har kuniga qisqa)
-3. Ovqatlanish tavsiyalari (3-4 band)
-Javobni qisqa va amaliy tut, ortiqcha uzun bo'lmasin.`;
-
-  try{
-    const text = await callAI(prompt);
-    document.getElementById('planResult').textContent = text;
-  }catch(e){
-    document.getElementById('planResult').textContent = 'Xatolik yuz berdi. Iltimos qayta urinib ko\'ring.';
-  }
-  document.getElementById('planLoading').classList.add('hidden');
+  document.getElementById('planResult').innerHTML = calcPlan({name, age, height, weight, gender, goal});
   document.getElementById('planResult').classList.remove('hidden');
+  document.getElementById('planResult').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-async function handleFood(input){
+// Taomlar bazasi — AI'siz, taxminiy o'rtacha porsiya asosida (kkal, oqsil, uglevod, yog' — gramm)
+const FOOD_DB = [
+  {name:"Osh (Plov)", cal:550, protein:18, carb:70, fat:20},
+  {name:"Lag'mon", cal:420, protein:20, carb:55, fat:12},
+  {name:"Manti (5 dona)", cal:480, protein:22, carb:45, fat:22},
+  {name:"Somsa (1 dona)", cal:300, protein:10, carb:25, fat:18},
+  {name:"Shashlik (qo'y go'shti)", cal:450, protein:35, carb:2, fat:33},
+  {name:"Norin", cal:500, protein:25, carb:40, fat:25},
+  {name:"Chuchvara", cal:400, protein:18, carb:45, fat:15},
+  {name:"Dimlama", cal:380, protein:20, carb:35, fat:18},
+  {name:"Mastava", cal:250, protein:10, carb:30, fat:8},
+  {name:"Sho'rva", cal:220, protein:15, carb:20, fat:8},
+  {name:"Non (1 dona)", cal:260, protein:8, carb:50, fat:3},
+  {name:"Achichuq salat", cal:60, protein:2, carb:10, fat:1},
+  {name:"Burger", cal:550, protein:25, carb:45, fat:30},
+  {name:"Pitsa (1 bo'lak)", cal:285, protein:12, carb:36, fat:10},
+  {name:"Qovurdoq osh", cal:480, protein:22, carb:40, fat:25},
+  {name:"Qovurilgan kartoshka", cal:320, protein:4, carb:40, fat:16},
+  {name:"Tovuq go'shti (grill)", cal:250, protein:40, carb:0, fat:10},
+  {name:"Sabzavotli salat", cal:90, protein:3, carb:12, fat:3},
+  {name:"Sut kokteyli", cal:300, protein:8, carb:45, fat:10},
+  {name:"Shirin choy", cal:40, protein:0, carb:10, fat:0},
+  {name:"Kola", cal:140, protein:0, carb:36, fat:0},
+  {name:"Meva salat", cal:120, protein:2, carb:28, fat:0},
+  {name:"Yogurt", cal:150, protein:8, carb:15, fat:6},
+  {name:"Qovurilgan tuxum (2 dona)", cal:200, protein:14, carb:2, fat:15},
+  {name:"Sendvich", cal:350, protein:15, carb:35, fat:16},
+  {name:"Makaron", cal:380, protein:12, carb:60, fat:10},
+  {name:"Suzma", cal:180, protein:15, carb:8, fat:10},
+  {name:"Halva", cal:400, protein:8, carb:50, fat:20},
+  {name:"Shokolad (100g)", cal:540, protein:6, carb:60, fat:30},
+  {name:"Osh qozon-qovurma", cal:470, protein:24, carb:38, fat:24}
+];
+
+function foodAdviceFor(cal){
+  if(cal >= 450) return "Bu — yuqori kaloriyali taom. Agar vazn tashlamoqchi bo'lsangiz, porsiyani kamaytiring yoki shu kuni boshqa ovqatlaringizni yengilroq tanlang.";
+  if(cal >= 250) return "O'rtacha kaloriyali taom — muvozanatli ovqatlanish rejasiga yaxshi mos keladi.";
+  return "Bu — yengil, past kaloriyali taom. Kunlik ratsionga qo'shish uchun yaxshi variant.";
+}
+
+// Datalist'ni to'ldirish
+document.getElementById('foodList').innerHTML = FOOD_DB.map(f => `<option value="${f.name}">`).join('');
+
+function renderFoodSuggestions(items){
+  const box = document.getElementById('foodSuggestions');
+  box.innerHTML = items.slice(0,6).map(f => `<button type="button" class="pill" onclick="selectFood('${f.name.replace(/'/g,"\\'")}')">${f.name}</button>`).join('');
+}
+renderFoodSuggestions(FOOD_DB.slice(0,6));
+
+function handleFoodSearch(){
+  const q = document.getElementById('foodSearch').value.trim().toLowerCase();
+  document.getElementById('foodResult').classList.add('hidden');
+  document.getElementById('foodNotFound').classList.add('hidden');
+  if(!q){ renderFoodSuggestions(FOOD_DB.slice(0,6)); return; }
+
+  const exact = FOOD_DB.find(f => f.name.toLowerCase() === q);
+  if(exact){ showFood(exact); return; }
+
+  const matches = FOOD_DB.filter(f => f.name.toLowerCase().includes(q));
+  if(matches.length === 0){
+    document.getElementById('foodSuggestions').innerHTML = '';
+    document.getElementById('foodNotFound').classList.remove('hidden');
+    return;
+  }
+  renderFoodSuggestions(matches);
+}
+
+function selectFood(name){
+  document.getElementById('foodSearch').value = name;
+  const item = FOOD_DB.find(f => f.name === name);
+  if(item) showFood(item);
+}
+
+function showFood(item){
+  document.getElementById('foodNotFound').classList.add('hidden');
+  document.getElementById('foodName').textContent = item.name;
+  document.getElementById('m_cal').textContent = item.cal;
+  document.getElementById('m_protein').textContent = item.protein;
+  document.getElementById('m_carb').textContent = item.carb;
+  document.getElementById('m_fat').textContent = item.fat;
+  document.getElementById('foodAdvice').textContent = foodAdviceFor(item.cal);
+  document.getElementById('foodResult').classList.remove('hidden');
+}
+
+function handleFoodPhoto(input){
   const file = input.files[0];
   if(!file) return;
   const preview = document.getElementById('foodPreview');
   const reader = new FileReader();
-  reader.onload = async (e) => {
-    const dataUrl = e.target.result;
-    preview.src = dataUrl;
+  reader.onload = (e) => {
+    preview.src = e.target.result;
     preview.classList.remove('hidden');
-    document.getElementById('foodResult').classList.add('hidden');
-    document.getElementById('foodLoading').classList.remove('hidden');
-
-    const base64Data = dataUrl.split(',')[1];
-    const mediaType = file.type || 'image/jpeg';
-
-    try{
-      const foodPrompt = "Bu taom rasmi. Faqat quyidagi formatda JSON qaytar, boshqa hech narsa yozma, markdown belgilarsiz: {\"food_name\": \"taom nomi o'zbekcha\", \"calories\": raqam, \"protein\": raqam, \"carbs\": raqam, \"fat\": raqam, \"advice\": \"qisqa maslahat o'zbek tilida\"}";
-      let text = await callAI(foodPrompt, { mediaType, data: base64Data });
-      text = text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(text);
-
-      document.getElementById('foodName').textContent = parsed.food_name;
-      document.getElementById('m_cal').textContent = parsed.calories;
-      document.getElementById('m_protein').textContent = parsed.protein;
-      document.getElementById('m_carb').textContent = parsed.carbs;
-      document.getElementById('m_fat').textContent = parsed.fat;
-      document.getElementById('foodAdvice').textContent = parsed.advice;
-      document.getElementById('foodResult').classList.remove('hidden');
-    }catch(err){
-      document.getElementById('foodAdvice').textContent = 'Tahlil qilishda xatolik yuz berdi. Qayta urinib ko\'ring.';
-      document.getElementById('foodResult').classList.remove('hidden');
-    }
-    document.getElementById('foodLoading').classList.add('hidden');
   };
   reader.readAsDataURL(file);
 }
